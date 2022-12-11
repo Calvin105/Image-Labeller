@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/commit.css') }}">
+        <title>Classifier</title>
+    </head>
+
+    <body>
+        <div class="logs">
+            <div style="margin:auto;">
+                <p class="log-filenames" style="background-color: rgb(74, 205, 249); border: thin grey solid;">{{ logs[0] }}</p>
+                <p class="log-filenames">{{ logs[1] }}</p>
+                <p class="log-filenames">{{ logs[2] }}</p>
+                <p class="log-filenames">{{ logs[3] }}</p>
+                <p class="log-filenames">{{ logs[4] }}</p>
+                <p class="log-filenames">{{ logs[5] }}</p>
+                <p class="log-filenames">{{ logs[6] }}</p>
+                <p class="log-filenames">{{ logs[7] }}</p>
+                <p class="log-filenames">{{ logs[8] }}</p>
+                <p class="log-filenames">{{ logs[9] }}</p>
+            </div>
+            <div style="margin:auto;">
+                <p class="log-filenames">{{ logs[10] }}</p>
+                <p class="log-filenames">{{ logs[11] }}</p>
+                <p class="log-filenames">{{ logs[12] }}</p>
+                <p class="log-filenames">{{ logs[13] }}</p>
+                <p class="log-filenames">{{ logs[14] }}</p>
+                <p class="log-filenames">{{ logs[15] }}</p>
+                <p class="log-filenames">{{ logs[16] }}</p>
+                <p class="log-filenames">{{ logs[17] }}</p>
+                <p class="log-filenames">{{ logs[18] }}</p>
+                <p class="log-filenames">{{ logs[19] }}</p>
+            </div>
+            <div style="margin:auto;">
+                <p class="log-filenames">{{ logs[20] }}</p>
+                <p class="log-filenames">{{ logs[21] }}</p>
+                <p class="log-filenames">{{ logs[22] }}</p>
+                <p class="log-filenames">{{ logs[23] }}</p>
+                <p class="log-filenames">{{ logs[24] }}</p>
+                <p class="log-filenames">{{ logs[25] }}</p>
+                <p class="log-filenames">{{ logs[26] }}</p>
+                <p class="log-filenames">{{ logs[27] }}</p>
+                <p class="log-filenames">{{ logs[28] }}</p>
+                <p class="log-filenames">{{ logs[29] }}</p>
+            </div>
+        </div>
+
+        <div class="statistics">
+            <div class="labels">
+                {% for k, cols in label_loop %}
+                    <div style="display:flex;">
+                        {% for i in range(cols) %}
+                            <div class="label-container">
+                                <p class="node">{{ category_count[labels[(k*10)+i]] }}</p><p class="label">{{ labels[(k*10)+i] }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+                
+
+            <div class="summary-container">
+                <div class="summary">
+                    <p class="summary-point"><span style="font-weight:bold;">Total:  </span>{{ stats[0] }}</p>
+                    <p class="summary-point"><span style="font-weight:bold;">Labelled:  </span>{{ stats[1] }}</p>
+                    <p class="summary-point"><span style="font-weight:bold;">Unlabelled:  </span>{{ stats[2] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="red-btn-container">
+            <div class="back-btn-container">
+                <form action="" method="POST" style="margin-top:auto; margin-bottom:auto; margin-left: 30px;">
+                    <button class="back-btn" type="submit" name="back" value="back">Back</button>
+                </form>
+            </div>
+            <button type="submit" class="red-btn" value="Commit Changes" onclick="openPopup()">Commit Changes</button>
+        </div>
+
+        <div class="popup" id="popup">
+            <img src="{{ url_for('static', filename='asset/warning.png') }}">
+            <h2>Are You Sure?</h2>
+            <p>This action is irreversible. Images will be moved and renamed.</p>
+            <form action="" method="POST">
+                <button type="button" onclick="closePopup('ignore')" name="commit" value="cancel">Cancel</button>
+                <span></span>
+                <button type="submit" onclick="closePopup('open')" name="commit" value="commit">Commit</button>
+            </form>
+        </div>
+
+        <script>
+            let popup = document.getElementById("popup");
+            function openPopup(){ popup.classList.add("open-popup"); }
+            function closePopup(mode){ popup.classList.remove("open-popup"); }
+        </script>
+    </body>
+</html>

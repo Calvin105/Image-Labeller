@@ -1,0 +1,40 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {background-color: #E3D7BD;}
+h1, h2, h3, h4, h5, h6, p, a, button {
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    letter-spacing: 2px;
+}
+h2{
+    color: #EA4C89;
+    font-size: 1.8em;
+}
+.container{
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    display: flex;
+}
+a{
+    font-weight: 200;
+    margin-top: 10px;
+    width: fit-content;
+    align-self: center;
+    border-radius: 20px;
+    background-color: #EA4C89;
+    color: white;
+    touch-action: manipulation;
+    text-decoration: none;
+    border-style: none;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    padding: 8px 13px;
+    font-size: 12px;
+}
+a:hover{background-color: #CC3D3D;}

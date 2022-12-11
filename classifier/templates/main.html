@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+        <title>Classifier</title>
+    </head>
+
+    <body>
+        <div class="body-container">
+            <div id="info-panel">
+                <div class="container-1">
+                    <div class="left-menu">
+                        <div class="text-highlight">
+                            <h2>Log</h2>
+                        </div>
+
+                        <div>
+                            <p class="log-filenames" style="background-color: rgb(74, 205, 249); border: thin grey solid;">{{ logs[0] }}</p>
+                            <p class="log-filenames">{{ logs[1] }}</p>
+                            <p class="log-filenames">{{ logs[2] }}</p>
+                            <p class="log-filenames">{{ logs[3] }}</p>
+                            <p class="log-filenames">{{ logs[4] }}</p>
+                        </div>
+
+                        <div class="text-highlight">
+                            <h2>File Info</h2>
+                        </div>
+
+                        <table class="info-panel">
+                            <tr>
+                                <td><p class="small-text info-right" style="font-weight: bold;">Name:</p></td>
+                                <td><p class="small-text info-panel-data" style="font-weight: bold; height: 48px;">{{ img.filename }}</p></td>
+                            </tr>
+                            <tr>
+                                <td><p class="small-text info-right">Kind:</p></td>
+                                <td><p class="small-text info-panel-data">{{ img.extension[1:].upper() }} image</p></td>
+                            </tr>
+                            <tr>
+                                <td><p class="small-text info-right">Size:</p></td>
+                                <td><p class="small-text info-panel-data">{{ img.size }} KB</p></td>
+                            </tr>
+                            <tr>
+                                <td><p class="small-text info-right">Where:</p></td>
+                                <td><p class="small-text info-panel-data">{{ static_path }}</p></td>
+                            </tr>
+                            <tr>
+                                <td><p class="small-text info-right">Dimensions:</p></td>
+                                <td><p class="small-text info-panel-data">{{ img.width }} x {{ img.height }}</p></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="img-display-panel">
+                <img src="{{ img_file }}" class="display-container">
+            </div>
+
+            <div id="label-panel">
+                <div class="side-container">
+                    <form method="POST" action="" name="labelling">
+                        <div class="add-menu">
+                            <div class="add-menu-subcontainer-1">
+                                <input placeholder="Add Label" autocomplete="off" name="add-label" class="add-field" type="text">
+                                <button class="send-button" type="submit" value="submit" name="send">
+                                    <img src="{{ url_for('static', filename='asset/send.png') }}" class="send-icon">
+                                </button>
+                            </div>
+
+                            <div>
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% for category, message in messages %}
+                                        {% if category == "label-error" or category == "label-success" %}
+                                            <p class="{{ category }}-message">{{ message }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="scrollbar">
+                        {% for label in labels %}
+                            <label class="scrollbar-item" form="main-form">
+                                <input type="radio" name="label-action" value="{{ label }}" form="main-form" class="label-input" {% if label == img.label %} checked {% endif %}>
+                                <p class="label-span">{{ label }}</p>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div id="nav-panel">
+                <h5 class="info-text" style="text-align: center; margin-top: 2px;">{{ image_number }}</h5>
+
+                <br>
+
+                <form action="" method="POST" id="main-form">
+                    <div class="container-2">
+                        <input name="filename-action" type="text" class="input-field" placeholder="optional (filename without extension)" autocomplete="off" value="{{ img.chg_filename }}">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% for category, message in messages %}
+                                {% if category == "filename-error" %}
+                                    <p class="{{ category }}-message">{{ message }}</p>
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                    </div>
+
+                    <div class="container-3">
+                        <input class="button-left button-1" name="post-action" value="Back" type="submit">
+                        <input class="button-right button-1" name="post-action" value="Next" type="submit">
+                    </div>
+                </form>
+
+                <div class="container-4">
+                    <button type="submit" class="red-btn" value="Commit Changes" onclick="openPopup()">Commit Changes</button>
+                </div>
+
+                <form action="" method="POST" class="stats-pos">
+                    <button type="submit" name="stats" value="stats" class="stats-container">
+                        <img src="{{ url_for('static', filename='asset/stats.png') }}" class="stats-img">
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="popup" id="popup">
+            <img src="{{ url_for('static', filename='asset/warning.png') }}">
+            <h2>Are You Sure?</h2>
+            <p>This action is irreversible. Images will be moved and renamed.</p>
+            <form action="" method="POST">
+                <button type="submit" onclick="closePopup('ignore')" name="commit" value="cancel">Cancel</button>
+                <span></span>
+                <button type="submit" onclick="closePopup('open')" name="commit" value="commit">Commit</button>
+            </form>
+        </div>
+
+        <script>
+            let popup = document.getElementById("popup");
+            function openPopup(){ popup.classList.add("open-popup"); }
+            function closePopup(mode){ popup.classList.remove("open-popup"); }
+        </script>
+    </body>
+</html>
